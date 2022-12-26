@@ -1,0 +1,19 @@
+# private
+.env
+
+# npm
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build
+dist/
+
+# IDEs
+.idea/
+.vscode/
+.DS_Store/
+
+
+# logs
+yarn-error.log
