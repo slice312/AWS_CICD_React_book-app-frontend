@@ -13,7 +13,7 @@ jobs:
       - run: npm i -g yarn
       - run: yarn
       - run: yarn lint-ts
-      - run: yarn styles
+      - run: yarn lint-styles
       - run: yarn build
       - uses: jakejarvis/s3-sync-action@master
         with:
