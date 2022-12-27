@@ -1,0 +1,85 @@
+@import "@/shared/styles/mixins.scss";
+
+
+.bookCard {
+    width: 440px;
+    height: 180px;
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5px;
+    background-color: white;
+    border-radius: 10px;
+    @include font-default(400, 15px, 15px, black);
+    cursor: pointer;
+    transition: 0.4s;
+
+    &:hover {
+        box-shadow: 4px 4px 8px 7px rgba(34, 60, 80, 0.2);
+        transform: scale(0.98);
+    }
+    
+    &:active {
+        background-color: #E5E3E3;
+    }
+
+    .title {
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .author {
+        margin-top: 10px;
+        font-size: 17px;
+        line-height: 24px;
+        font-weight: 400;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #EDEDED;
+        border-radius: 12px;
+
+        &:active {
+            transform: scale(0.98);
+        }
+
+        &:hover {
+            transition: 0.12s;
+            background-color: #BBC5C7;
+        }
+    }
+
+    svg {
+        &:hover {
+            fill: #6DA7B6;
+        }
+    }
+}
+
+
+@media (max-width: 475px) {
+    .bookCard {
+        width: 85vw;
+        min-height: 150px;
+        height: auto;
+
+        .title {
+            font-weight: 700;
+            font-size: 17px;
+            line-height: 20px;
+        }
+    }
+}

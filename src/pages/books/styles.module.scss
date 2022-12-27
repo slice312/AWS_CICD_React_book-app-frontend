@@ -1,0 +1,61 @@
+@import "@/shared/styles/vars.scss";
+@import "@/shared/styles/mixins.scss";
+
+
+.booksPage {
+    height: auto;
+    min-height: 100vh;
+    padding-bottom: 20px;
+    background-color: $color-bg-main;
+    @include font-default(400, 15px, auto, black);
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title {
+        margin-top: 25px;
+        font-size: 44px;
+        line-height: 66px;
+        text-align: center;
+    }
+
+    // TODO: добавить в JSX
+    //&__empty-msg {
+    //    margin-top: 25px;
+    //    font-size: 33px;
+    //    line-height: 66px;
+    //    text-align: center;
+    //}
+
+    .list {
+        max-width: 1040px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        padding: 40px 50px;
+    }
+
+    .btnAdd {
+        align-self: center;
+        padding: 5px 120px;
+        font-size: 20px;
+        line-height: 30px;
+    }
+}
+
+// TODO: вернуть
+//@media (max-width: 475px) {
+//    .books-page {
+//        &__title {
+//            font-size: 38px;
+//        }
+//
+//        .book-list {
+//            padding-top: 30px;
+//        }
+//    }
+//}
