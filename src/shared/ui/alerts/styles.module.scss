@@ -1,0 +1,53 @@
+@import "@/shared/styles/vars.scss";
+@import "@/shared/styles/mixins.scss";
+
+
+
+.alertContainer {
+    @include flex-col(unset, center);
+    gap: 10px
+}
+
+
+.alertErrorMsg {
+    @include font-default(700, 20px, 21px, black);
+}
+
+.alertSuccessMsg {
+    height: 30px;
+    @include font-default(700, 20px, 21px, black);
+}
+
+.alertBtn {
+    width: 110px;
+    height: 35px;
+    @include font-default(400, 16px, 21px, white);
+}
+
+
+.dialogButton {
+    width: 110px;
+    height: 35px;
+    @include font-default(400, 16px, 21px, white);
+    border-radius: 3px;
+    transition: 0.3s;
+}
+
+.submitButton {
+    margin-right: 20px;
+    background-color: #287F9A;
+
+    &:hover {
+        background-color: #51A1B9;
+    }
+}
+
+.cancelButton {
+    margin-left: 20px;
+    background-color: rgb(211, 8, 8);;
+
+    &:hover {
+        background-color: rgb(206, 98, 98);;
+    }
+}
+

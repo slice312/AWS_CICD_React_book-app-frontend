@@ -1,0 +1,39 @@
+.modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 999; // TODO: решить проблему с z-index у Синяка было
+    overflow: auto;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+
+    .content {
+        min-height: 100%;
+        padding: 90px 50px;
+        transition: all 0.3s ease-in-out;
+        transform: scale(0.4);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.modalOpen {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+
+    .content {
+        transform: scale(1);
+    }
+}
+
+.modalExit {
+    opacity: 0;
+}
