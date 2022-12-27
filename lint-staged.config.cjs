@@ -12,5 +12,7 @@ module.exports = {
         const filesToLint = await removeIgnoredFiles(files);
         return [`eslint --max-warnings=0 ${filesToLint}`];
     },
-    "*.(css|scss|sass)": (files) => [`stylelint --fix --max-warnings=0 ${files}`]
+    "*.(css|scss|sass)": (files) => {
+        return [`stylelint --fix --max-warnings=0 ${files}`]
+    }
 };
