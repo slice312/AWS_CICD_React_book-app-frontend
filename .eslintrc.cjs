@@ -13,7 +13,6 @@ module.exports = {
     ignorePatterns: [
         "node_modules/*",
         "src/assets/**",
-        "build/**",
         "dist/**",
         "@types/assets/index.d.ts"
     ],
