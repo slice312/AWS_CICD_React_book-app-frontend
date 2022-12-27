@@ -8,11 +8,9 @@ const removeIgnoredFiles = async (files) => {
 };
 
 module.exports = {
-    "*.{js,ts}": async (files) => {
+    "*.(ts|tsx)": async (files) => {
         const filesToLint = await removeIgnoredFiles(files);
         return [`eslint --max-warnings=0 ${filesToLint}`];
     },
-    "*.(css|scss|sass)": [
-        "stylelint --fix --max-warnings=0"
-    ]
+    "*.(css|scss|sass)": (files) => [`stylelint --fix --max-warnings=0 ${files}`]
 };
