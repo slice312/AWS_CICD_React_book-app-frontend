@@ -14,10 +14,9 @@ jobs:
       - run: yarn
       - name: Create env file
         env:
-          WEB_API_URL: "hakuna matata"
+          WEB_API_URL: ${{ secrets.WEB_API_URL }}
         run: |
           echo "VITE_WEB_API_URL=$WEB_API_URL" > .env
-          cat .env
       - run: yarn build
       - run: yarn lint-ts
       - run: yarn lint-styles
