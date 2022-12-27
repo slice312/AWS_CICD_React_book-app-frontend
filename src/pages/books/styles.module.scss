@@ -23,12 +23,12 @@
     }
 
     // TODO: добавить в JSX
-    //&__empty-msg {
-    //    margin-top: 25px;
-    //    font-size: 33px;
-    //    line-height: 66px;
-    //    text-align: center;
-    //}
+    &__empty-msg {
+        margin-top: 25px;
+        font-size: 33px;
+        line-height: 66px;
+        text-align: center;
+    }
 
     .list {
         max-width: 1040px;

@@ -1,4 +1,4 @@
-const { ESLint } = require("eslint");
+const {ESLint} = require("eslint");
 
 const removeIgnoredFiles = async (files) => {
     const eslint = new ESLint();
