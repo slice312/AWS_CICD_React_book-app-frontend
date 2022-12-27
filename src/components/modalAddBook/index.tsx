@@ -1,12 +1,14 @@
 import {useFormik} from "formik";
 import * as Yup from "yup";
 
+import {DTO, Api} from "@/shared/api";
 import {Modal} from "@/shared/ui/modal/Modal";
 import {Button} from "@/shared/ui/button";
 
 import css from "./styles.module.scss";
 
 import {ReactComponent as XMarkIcon} from "@/assets/icons/x-mark.svg";
+import Swal from "sweetalert2";
 
 
 export const validationSchema = Yup.object().shape({
@@ -31,15 +33,31 @@ export const ModalAddBook = ({isOpen, onClose}: Props) => {
             isbn: "",
             title: "",
             author: "",
-            year: "",
+            description: "",
+            year: 2000,
             pages: 0,
-            description: ""
-        },
+        } as DTO.Book,
         validationSchema,
         validateOnBlur: false,
         validateOnChange: true,
-        onSubmit: async (values) => {
+        onSubmit: async (values, {resetForm}) => {
             console.log("FORMIK", values);
+            try {
+                const response = await Api.addBook(values);
+                if (response.status === 200) {
+                    await Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Created",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    onClose();
+                    resetForm();
+                }
+            } catch (err) {
+                console.error(err);
+            }
 
         }
     });
@@ -49,7 +67,7 @@ export const ModalAddBook = ({isOpen, onClose}: Props) => {
                 <Button
                     className={css.btnClose}
                     type="button"
-                    onClick={close}
+                    onClick={onClose}
                     Icon={<XMarkIcon/>}
                 >
                 </Button>

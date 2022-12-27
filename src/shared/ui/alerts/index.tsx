@@ -11,7 +11,6 @@ const MySwal = withReactContent(Swal);
 const deleteDialog = async (): Promise<SweetAlertResult<void>> => {
     return await MySwal.fire({
         backdrop: true,
-        heightAuto: true,
         position: "center",
         timer: 3000,
         html: (
@@ -19,6 +18,7 @@ const deleteDialog = async (): Promise<SweetAlertResult<void>> => {
                 <p className={css.alertSuccessMsg}>Are you sure to delete?</p>
             </div>
         ),
+        loaderHtml: <p className={css.alertSuccessMsg}>Are you sure to delete?</p>,
         buttonsStyling: false,
         showConfirmButton: true,
         showDenyButton: true,
