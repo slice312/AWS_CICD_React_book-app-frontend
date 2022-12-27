@@ -15,6 +15,7 @@ jobs:
       - name: Create env file
         run: |
           echo "VITE_WEB_API_URL=$WEB_API_URL" > .env
+          cat .env
       - run: yarn build
       - run: yarn lint-ts
       - run: yarn lint-styles
