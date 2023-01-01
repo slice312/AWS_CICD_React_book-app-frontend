@@ -2,7 +2,6 @@
 @import "@/shared/styles/mixins.scss";
 
 
-
 .alertContainer {
     @include flex-col(unset, center);
     gap: 10px

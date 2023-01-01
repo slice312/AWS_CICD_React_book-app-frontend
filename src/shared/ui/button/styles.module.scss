@@ -2,7 +2,7 @@
 @import "@/shared/styles/vars.scss";
 
 
-.buttonT {
+.button {
     @include font-default(400, 15px, normal, white);
     background-color: #287F9A;
     text-align: center;
