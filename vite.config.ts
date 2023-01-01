@@ -15,10 +15,6 @@ export default defineConfig({
     },
     server: {
         port: 3000,
-        // https: {
-        //     key: fs.readFileSync("key.pem"),
-        //     cert: fs.readFileSync("cert.pem"),
-        // }
     }
 });
 

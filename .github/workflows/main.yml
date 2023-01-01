@@ -13,7 +13,7 @@ jobs:
       - run: npm i -g yarn
       - run: yarn
       - name: Create env file
-        env:
+        env: # TODO: переписать без env
           WEB_API_URL: ${{ secrets.WEB_API_URL }}
         run: |
           echo "VITE_WEB_API_URL=$WEB_API_URL" > .env

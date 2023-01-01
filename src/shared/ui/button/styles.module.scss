@@ -2,14 +2,14 @@
 @import "@/shared/styles/vars.scss";
 
 
-.button {
+.buttonT {
     @include font-default(400, 15px, normal, white);
-    padding: 5px;
     background-color: #287F9A;
     text-align: center;
     border-radius: 12px;
     user-select: none;
     transition: 0.3s;
+    padding: 14px 48px;
 
     &:hover {
         background-color: #51A1B9;

@@ -9,12 +9,14 @@ import {ReactComponent as HeartIcon} from "@/assets/icons/heart.svg";
 
 interface Props {
     book: DTO.Book;
+    onOpenBook: (isbn: string) => void;
     onDelete: (isbn: string) => Promise<void>;
 }
 
-//fill="#B1B1B1"  // fill=${props.isFavorite ? "red" : "gray"}
 
-export const BookCard = ({book, onDelete}: Props) => {
+export const BookCard = ({book, onOpenBook, onDelete}: Props) => {
+    // const [toggleFavorite] = bookApi.useToggleFavoriteMutation();
+
     const onDeleteClick = async () => {
         const dialogResult = await Alerts.deleteDialog();
         if (dialogResult.isConfirmed)
@@ -22,7 +24,7 @@ export const BookCard = ({book, onDelete}: Props) => {
     };
 
     return (
-        <div className={css.bookCard} id="book-card">
+        <div className={css.bookCard} onClick={() => onOpenBook(book.isbn)}>
             <div>
                 <h3 className={css.title}>
                     {book.title}
