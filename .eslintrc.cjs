@@ -11,7 +11,7 @@ module.exports = {
     },
     plugins: ["import", "react", "@typescript-eslint"],
     ignorePatterns: [
-        "node_modules/*",
+        "node_modules/**",
         "src/assets/**",
         "dist/**",
         "@types/assets/index.d.ts"

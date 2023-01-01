@@ -1,5 +1,6 @@
 const {ESLint} = require("eslint");
 
+
 const removeIgnoredFiles = async (files) => {
     const eslint = new ESLint();
     const ignoredFiles = await Promise.all(files.map((file) => eslint.isPathIgnored(file)));
@@ -10,9 +11,9 @@ const removeIgnoredFiles = async (files) => {
 module.exports = {
     "*.(ts|tsx)": async (files) => {
         const filesToLint = await removeIgnoredFiles(files);
-        return [`eslint --max-warnings=0 ${filesToLint}`];
+        return [`eslint --fix --max-warnings=0 ${filesToLint}`];
     },
     "*.(css|scss|sass)": (files) => {
-        return [`stylelint --fix --max-warnings=0 ${files}`]
+        return [`stylelint --fix --max-warnings=0 ${files.join(" ")}`];
     }
 };
