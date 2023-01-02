@@ -84,6 +84,13 @@ export const BooksPage = (props: Props) => {
                 >
                     AddBook
                 </Button>
+
+                <Button
+                    className={css.btnAdd}
+                    linkTo={"/home"}
+                >
+                    Link
+                </Button>
             </div>
             <ModalAddBook isOpen={isShowAddBookModal} onClose={() => setIsShowAddBookModal(false)}/>
             <ModalEditBook isbn={selectedBookIsbn} isOpen={!!selectedBookIsbn} onClose={() => setSelectedBookIsbn("")}/>
