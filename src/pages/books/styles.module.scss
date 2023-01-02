@@ -3,7 +3,8 @@
 
 
 .booksPage {
-    height: auto;
+    //height: auto;
+    //min-height: 100%;
     padding-bottom: 20px;
     background-color: $color-bg-main;
     @include font-default(400, 15px, auto, black);
