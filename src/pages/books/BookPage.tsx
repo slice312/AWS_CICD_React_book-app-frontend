@@ -1,5 +1,4 @@
-import React, {useCallback, useState} from "react";
-import Swal from "sweetalert2";
+import React, {useState} from "react";
 import cn from "classnames";
 
 
@@ -23,23 +22,6 @@ export const BooksPage = (props: Props) => {
     const [selectedBookIsbn, setSelectedBookIsbn] = useState("");
 
     const {data: books, isLoading, error} = bookApi.useGetAllBooksQuery();
-
-    console.log("RTK ", isLoading, books);
-
-
-    // TODO: isFetching добавить
-    const [deleteBookTrigger] = bookApi.useDeleteBookMutation();
-
-
-    const deleteBook = useCallback(async (isbn: string) => {
-        try {
-            await deleteBookTrigger(isbn); // TODO: result and what with unwrap method
-            showSuccessDeleteMsg();
-        } catch (err) {
-
-        }
-    }, []);
-
 
     const openBook = (isbn: string) => {
         setSelectedBookIsbn(isbn);
@@ -71,7 +53,6 @@ export const BooksPage = (props: Props) => {
                             <BookCard
                                 key={i}
                                 book={book}
-                                onDelete={deleteBook}
                                 onOpenBook={() => openBook(book.isbn)}
                             />
                         )
@@ -84,13 +65,6 @@ export const BooksPage = (props: Props) => {
                 >
                     AddBook
                 </Button>
-
-                <Button
-                    className={css.btnAdd}
-                    linkTo={"/home"}
-                >
-                    Link
-                </Button>
             </div>
             <ModalAddBook isOpen={isShowAddBookModal} onClose={() => setIsShowAddBookModal(false)}/>
             <ModalEditBook isbn={selectedBookIsbn} isOpen={!!selectedBookIsbn} onClose={() => setSelectedBookIsbn("")}/>
@@ -99,12 +73,3 @@ export const BooksPage = (props: Props) => {
 };
 
 
-const showSuccessDeleteMsg = () => {
-    Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Deleted",
-        showConfirmButton: false,
-        timer: 1500
-    });
-};

@@ -6,9 +6,6 @@ export interface Book {
     title: string;
     author: string;
     description: string;
-    year: number;
     pages: number;
-    price?: number;
-    qty?: number;
     isFavorite?: boolean;
 }

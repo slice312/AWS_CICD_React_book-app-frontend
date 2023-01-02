@@ -18,8 +18,6 @@ export const validationSchema = Yup.object().shape({
     isbn: Yup.string().required("Input title"),
     title: Yup.string().required("Input title"),
     author: Yup.string().required("Input title"),
-    year: Yup.date()
-        .max(new Date().getFullYear(), "nono"),
     pages: Yup.number().required("Input title"),
     description: Yup.string().required("Input title"),
 });
@@ -60,7 +58,6 @@ export const ModalEditBook = ({isbn, isOpen, onClose}: Props) => {
             title: book?.title || "",
             author: book?.author || "",
             description: book?.description || "",
-            year: book?.year || 2000,
             pages: book?.pages || 0,
         } as DTO.Book,
         validationSchema,
@@ -156,21 +153,6 @@ export const ModalEditBook = ({isbn, isOpen, onClose}: Props) => {
                             {...formik.getFieldProps("author")}
                         />
                         <span className={css.errorLabel}>{formik.errors.author}</span>
-                    </div>
-
-                    <div className={css.field}>
-                        <label htmlFor="input-year">
-                            Year:
-                        </label>
-                        <input
-                            id="input-year"
-                            className={formik.errors.year && css.inputError}
-                            type="number"
-                            pattern="d{4}"
-                            placeholder="Publish year"
-                            {...formik.getFieldProps("year")}
-                        />
-                        <span className={css.errorLabel}>{formik.errors.year}</span>
                     </div>
 
                     <div className={css.field}>

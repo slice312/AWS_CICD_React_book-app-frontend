@@ -34,7 +34,8 @@ export const bookApi = createApi({
                     method: "POST",
                     body: book
                 };
-            }
+            },
+            invalidatesTags: ["Books"]
         }),
         updateBook: build.mutation<void, UpdateRequest>({
             query: (args) => {

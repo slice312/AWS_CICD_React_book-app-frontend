@@ -21,7 +21,6 @@ export const Modal = ({children, isOpen, onClose}: Props) => {
                 onClose();
         };
         document.body.addEventListener("keydown", closeOnEscapeKey);
-        document.body.style.overflow = "hidden"; // disable scrolling
 
         return () => {
             document.body.removeEventListener("keydown", closeOnEscapeKey);
@@ -30,12 +29,17 @@ export const Modal = ({children, isOpen, onClose}: Props) => {
 
     }, [onClose]);
 
+    useEffect(() => {
+        document.body.style.overflow = isOpen ? "hidden" : "auto"; // disable scrolling
+    }, [isOpen]);
+
     return (
         <ReactPortal wrapperId="modal-root">
             <CSSTransition
                 nodeRef={nodeRef}
                 in={isOpen}
-                timeout={{enter: 0, exit: 2000}}
+                timeout={{enter: 0, exit: 300}}
+                mountOnEnter
                 unmountOnExit
                 classNames={{
                     enterDone: css.modalOpen,

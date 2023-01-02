@@ -1,25 +1,18 @@
+import {useEffect, useState} from "react";
 import {useFormik} from "formik";
-import * as Yup from "yup";
 import Swal from "sweetalert2";
+import cn from "classnames";
 
-import {DTO, bookApi} from "@/shared/api";
-import {Modal} from "@/shared/ui/modal/Modal";
+import {bookApi} from "@/shared/api";
+import {Modal} from "@/shared/ui/modal";
 import {Button} from "@/shared/ui/button";
+
+import {validationSchema, initialValues} from "./model";
 
 import css from "./styles.module.scss";
 
 import {ReactComponent as XMarkIcon} from "@/assets/icons/x-mark.svg";
-
-
-export const validationSchema = Yup.object().shape({
-    isbn: Yup.string().min(5, "Input title"),
-    title: Yup.string().required("Input title"),
-    author: Yup.string().required("Input title"),
-    year: Yup.date()
-        .max(new Date().getFullYear(), "nono"),
-    pages: Yup.number().required("Input title"),
-    description: Yup.string().required("Input title"),
-});
+import {BlockingLoader} from "@/shared/ui/blockingLoader";
 
 
 interface Props {
@@ -27,30 +20,33 @@ interface Props {
     onClose: () => void;
 }
 
-export const ModalAddBook = ({isOpen, onClose}: Props) => {
 
+export const ModalAddBook = ({isOpen, onClose}: Props) => {
+    return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalAddBook2 isOpen={isOpen} onClose={onClose}/>
+        </Modal>
+    );
+};
+
+export const ModalAddBook2 = ({isOpen, onClose}: Props) => {
     const [addBookTrigger] = bookApi.useAddBookMutation();
+    const [isValidateOnChange, setIsValidateOnChange] = useState(false);
 
 
     const formik = useFormik({
-        initialValues: {
-            isbn: "",
-            title: "",
-            author: "",
-            description: "",
-            year: 2000,
-            pages: 0,
-        } as DTO.Book,
+        initialValues,
         validationSchema,
         validateOnBlur: false,
-        validateOnChange: true,
+        validateOnChange: isValidateOnChange,
+        validate: () => {
+            setIsValidateOnChange(true);
+        },
         onSubmit: async (values, {resetForm}) => {
             try {
-                const response = await addBookTrigger(values);
-                console.log(response);
-                // TODO: response
-                // const response = await Api.addBook(values);
-                // if (response.status === 200) {
+                BlockingLoader.show();
+                await addBookTrigger(values).unwrap();
+                // TODO: handle result
                 await Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -63,117 +59,103 @@ export const ModalAddBook = ({isOpen, onClose}: Props) => {
                 // }
             } catch (err) {
                 console.error(err);
+            } finally {
+                BlockingLoader.hide();
             }
-
         }
     });
 
+
+    useEffect(() => {
+        return () => {
+            console.log("UNMOUNTED");
+            formik.resetForm({values: initialValues});
+        };
+    }, []);
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <div className={css.content}>
-                <Button
-                    className={css.btnClose}
-                    type="button"
-                    onClick={onClose}
-                    Icon={<XMarkIcon/>}
-                >
+        <div className={css.content}>
+            <Button
+                className={css.btnClose}
+                type="button"
+                onClick={onClose}
+                Icon={<XMarkIcon/>}
+            >
+            </Button>
+            <h2 className={css.title}>Add Book</h2>
+            <form className={css.form} autoComplete="on" onSubmit={formik.handleSubmit}>
+                <div className={css.field}>
+                    <label htmlFor="input-isbn">
+                        ISBN:
+                    </label>
+                    <input
+                        id="input-isbn"
+                        className={cn(css.input, formik.errors.isbn && css.inputError)}
+                        type="text"
+                        placeholder="ISBN"
+                        {...formik.getFieldProps("isbn")}
+                    />
+                    <span className={css.errorLabel}>{formik.errors.isbn}</span>
+                </div>
+
+                <div className={css.field}>
+                    <label htmlFor="input-title">
+                        Title:
+                    </label>
+                    <input
+                        id="input-title"
+                        className={cn(css.input, formik.errors.title && css.inputError)}
+                        type="text"
+                        placeholder="Title"
+                        {...formik.getFieldProps("title")}
+                    />
+                    <span className={css.errorLabel}>{formik.errors.title}</span>
+                </div>
+
+                <div className={css.field}>
+                    <label htmlFor="input-author">
+                        Author:
+                    </label>
+                    <input
+                        id="input-author"
+                        className={cn(css.input, formik.errors.author && css.inputError)}
+                        type="text"
+                        placeholder="Author"
+                        {...formik.getFieldProps("author")}
+                    />
+                    <span className={css.errorLabel}>{formik.errors.author}</span>
+                </div>
+
+                <div className={css.field}>
+                    <label htmlFor="input-pages">
+                        Pages:
+                    </label>
+                    <input
+                        id="input-pages"
+                        className={cn(css.input, formik.errors.pages && css.inputError)}
+                        type="number"
+                        placeholder="Pages"
+                        {...formik.getFieldProps("pages")}
+                    />
+                    <span className={css.errorLabel}>{formik.errors.pages}</span>
+                </div>
+
+                <div className={css.field}>
+                    <label htmlFor="input-description">
+                        Description:
+                    </label>
+                    <textarea
+                        id="input-description"
+                        className={cn(css.input, formik.errors.description && css.inputError)}
+                        placeholder="Description"
+                        {...formik.getFieldProps("description")}
+                    />
+                    <span className={css.errorLabel}>{formik.errors.description}</span>
+                </div>
+                <Button className={css.btnSave} type="submit">
+                    Save
                 </Button>
-                <h2 className={css.title}>Add Book</h2>
-
-                <form
-                    className={css.form}
-                    autoComplete="on"
-                    onSubmit={formik.handleSubmit}
-                >
-                    <div className={css.field}>
-                        <label htmlFor="input-isbn">
-                            ISBN:
-                        </label>
-                        <input
-                            id="input-isbn"
-                            className={formik.errors.isbn && css.inputError}
-                            type="text"
-                            placeholder="ISBN"
-                            {...formik.getFieldProps("isbn")}
-                        />
-                        <span className={css.errorLabel}>{formik.errors.isbn}</span>
-                    </div>
-
-                    <div className={css.field}>
-                        <label htmlFor="input-title">
-                            Title:
-                        </label>
-                        <input
-                            id="input-title"
-                            className={formik.errors.title && css.inputError}
-                            type="text"
-                            placeholder="Title"
-                            {...formik.getFieldProps("title")}
-                        />
-                        <span className={css.errorLabel}>{formik.errors.title}</span>
-                    </div>
-
-                    <div className={css.field}>
-                        <label htmlFor="input-author">
-                            Author:
-                        </label>
-                        <input
-                            id="input-author"
-                            className={formik.errors.author && css.inputError}
-                            type="text"
-                            placeholder="Author"
-                            {...formik.getFieldProps("author")}
-                        />
-                        <span className={css.errorLabel}>{formik.errors.author}</span>
-                    </div>
-
-                    <div className={css.field}>
-                        <label htmlFor="input-year">
-                            Year:
-                        </label>
-                        <input
-                            id="input-year"
-                            className={formik.errors.year && css.inputError}
-                            type="number"
-                            pattern="d{4}"
-                            placeholder="Publish year"
-                            {...formik.getFieldProps("year")}
-                        />
-                        <span className={css.errorLabel}>{formik.errors.year}</span>
-                    </div>
-
-                    <div className={css.field}>
-                        <label htmlFor="input-pages">
-                            Pages:
-                        </label>
-                        <input
-                            id="input-pages"
-                            className={formik.errors.pages && css.inputError}
-                            type="number"
-                            placeholder="Pages"
-                            {...formik.getFieldProps("pages")}
-                        />
-                        <span className={css.errorLabel}>{formik.errors.pages}</span>
-                    </div>
-
-                    <div className={css.field}>
-                        <label htmlFor="input-description">
-                            Description:
-                        </label>
-                        <input
-                            id="input-description"
-                            className={formik.errors.description && css.inputError}
-                            type="text"
-                            placeholder="Description"
-                            {...formik.getFieldProps("description")}
-                        />
-                        <span className={css.errorLabel}>{formik.errors.description}</span>
-                    </div>
-                    <Button className={css.btnSave} type="submit">
-                        Save
-                    </Button>
-                </form>
-            </div>
-        </Modal>
+            </form>
+        </div>
     );
 };
