@@ -21,8 +21,11 @@ export const Modal = ({children, isOpen, onClose}: Props) => {
                 onClose();
         };
         document.body.addEventListener("keydown", closeOnEscapeKey);
+        document.body.style.overflow = "hidden"; // disable scrolling
+
         return () => {
             document.body.removeEventListener("keydown", closeOnEscapeKey);
+            document.body.style.overflow = "auto";
         };
 
     }, [onClose]);

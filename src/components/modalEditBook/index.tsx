@@ -200,6 +200,7 @@ export const ModalEditBook = ({isbn, isOpen, onClose}: Props) => {
                         />
                         <span className={css.errorLabel}>{formik.errors.description}</span>
                     </div>
+
                     <Button className={css.btnSave} type="submit" disabled={formik.isSubmitting}>
                         Save
                     </Button>
