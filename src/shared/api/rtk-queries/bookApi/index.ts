@@ -15,13 +15,13 @@ export const bookApi = createApi({
     tagTypes: ["Books"],
     endpoints: (build) => ({
         getAllBooks: build.query<DTO.Book[], void>({
-            query: () => "Book/list",
+            query: () => "Books/list",
             providesTags: result => ["Books"]
         }),
         deleteBook: build.mutation<void, string>({
             query: (isbn) => {
                 return {
-                    url: `Book/${isbn}`,
+                    url: `Books/${isbn}`,
                     method: "DELETE"
                 };
             },
@@ -30,7 +30,7 @@ export const bookApi = createApi({
         addBook: build.mutation<DTO.Book, DTO.Book>({
             query: (book) => {
                 return {
-                    url: "Book",
+                    url: "Books",
                     method: "POST",
                     body: book
                 };
@@ -40,7 +40,7 @@ export const bookApi = createApi({
         updateBook: build.mutation<void, UpdateRequest>({
             query: (args) => {
                 return {
-                    url: `Book/${args.isbn}`,
+                    url: `Books/${args.isbn}`,
                     method: "PUT",
                     body: args.book
                 };
@@ -50,7 +50,7 @@ export const bookApi = createApi({
         toggleFavorite: build.mutation<boolean, string>({
             query: (isbn: string) => {
                 return {
-                    url: `Book/${isbn}`,
+                    url: `Books/${isbn}`,
                     method: "PATCH"
                 };
             },

@@ -5,7 +5,7 @@ import * as DTO from "./types";
 
 
 const getBookByIsbn = (isbn: string): Promise<AxiosResponse<DTO.Book>> => {
-    return axiosInstance.get(`Book/${isbn}`);
+    return axiosInstance.get(`Books/${isbn}`);
 };
 
 
