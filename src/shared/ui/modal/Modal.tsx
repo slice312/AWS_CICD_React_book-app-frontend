@@ -3,7 +3,7 @@ import {CSSTransition} from "react-transition-group";
 import cn from "classnames";
 
 import {ReactPortal} from "./ReactPortal";
-import css from "./styles.module.scss";
+import css from "./modal.module.scss";
 
 
 interface Props {

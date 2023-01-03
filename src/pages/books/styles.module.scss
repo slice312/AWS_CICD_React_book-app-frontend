@@ -3,8 +3,7 @@
 
 
 .booksPage {
-    height: auto;
-    min-height: 100%;
+    height: 100%;
     padding-bottom: 20px;
     background-color: $color-bg-main;
     @include font-default(400, 15px, auto, black);
@@ -35,7 +34,7 @@
         justify-content: center;
         flex-wrap: wrap;
         gap: 30px;
-        padding: 40px 50px;
+        padding: 40px 0;
     }
 
     .btnAdd {
@@ -46,15 +45,15 @@
     }
 }
 
-// TODO: вернуть
-//@media (max-width: 475px) {
-//    .books-page {
-//        &__title {
-//            font-size: 38px;
-//        }
-//
-//        .book-list {
-//            padding-top: 30px;
-//        }
-//    }
-//}
+
+@media (max-width: 475px) {
+    .booksPage {
+        .title {
+            font-size: 38px;
+        }
+
+        .list {
+            padding-top: 30px;
+        }
+    }
+}

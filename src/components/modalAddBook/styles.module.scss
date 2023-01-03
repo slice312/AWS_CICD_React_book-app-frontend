@@ -1,11 +1,10 @@
+@import "@/shared/styles/vars.scss";
 @import "@/shared/styles/mixins.scss";
 
 
 .content {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    @include flex-col(unset, flex-start);
     gap: 5px;
     padding: 30px 15px;
     border-width: 0;
@@ -13,7 +12,6 @@
     background-color: white;
     box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
     @include font-default(400, 20px, normal, black);
-
 
     .btnClose {
         position: absolute;
@@ -31,9 +29,7 @@
     }
 
     .form {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        @include flex-col(space-between);
         gap: 20px;
         border-radius: 10px;
         background-color: white;
@@ -53,6 +49,7 @@
 
             .input {
                 margin-top: 3px;
+                width: 400px;
                 padding: 5px 20px;
                 background: #FFFFFF;
                 border: 1px solid #B1B1B1;
@@ -65,16 +62,17 @@
                 }
 
                 &:focus {
-                    border-color: #287F9A;
+                    border-color: $color-element-main
                 }
             }
 
-            input.inputError {
-                border: 1px solid #CF4747;
+            .input.inputError {
+                border: 1px solid $color-danger;
             }
 
             textarea {
                 width: 100%;
+                height: 100px;
                 resize: none;
 
                 &::-webkit-scrollbar {
@@ -87,7 +85,7 @@
                 }
 
                 &::-webkit-scrollbar-thumb {
-                    background-color: #373A3A;
+                    background-color: $color-element-main;
                     border-radius: 10px;
                 }
             }
@@ -97,7 +95,7 @@
                 top: 45px;
                 left: 120px;
                 padding: 0 10px;
-                color: #CF4747;
+                color: $color-danger;
                 font-size: 12.5px;
                 line-height: 15px;
                 text-align: left;
@@ -114,3 +112,24 @@
     }
 }
 
+
+@media (max-width: $md) {
+    .content {
+        .title {
+            font-size: 30px;
+        }
+
+        .form {
+            .field {
+                label {
+                    font-size: 17px;
+                }
+
+                .input {
+                    width: 70%;
+                    font-size: 17px;
+                }
+            }
+        }
+    }
+}

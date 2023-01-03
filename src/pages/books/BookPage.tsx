@@ -12,12 +12,9 @@ import {ModalEditBook} from "@/components/modalEditBook";
 import {BooksSkeletonLoader} from "@/components/booksSkeletonLoader";
 
 
-interface Props {
-
-}
 
 
-export const BooksPage = (props: Props) => {
+export const BooksPage = () => {
     const [isShowAddBookModal, setIsShowAddBookModal] = useState(false);
     const [selectedBookIsbn, setSelectedBookIsbn] = useState("");
 
@@ -63,7 +60,7 @@ export const BooksPage = (props: Props) => {
                     type="button"
                     onClick={() => setIsShowAddBookModal(true)}
                 >
-                    AddBook
+                    Add Book
                 </Button>
             </div>
             <ModalAddBook isOpen={isShowAddBookModal} onClose={() => setIsShowAddBookModal(false)}/>
