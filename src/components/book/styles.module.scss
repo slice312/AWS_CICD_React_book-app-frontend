@@ -38,12 +38,13 @@
 
     .description {
         margin-top: 8px;
-        color: #6C6767;
+        padding-bottom: 2px;
         display: -webkit-box;
         -webkit-line-clamp: 5;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: #6C6767;
     }
 
     .buttons {
