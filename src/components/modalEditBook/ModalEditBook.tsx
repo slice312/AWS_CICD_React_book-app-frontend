@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {useFormik} from "formik";
-import * as Yup from "yup";
 import Swal from "sweetalert2";
 import cn from "classnames";
 
@@ -10,18 +9,12 @@ import {Button} from "@/shared/ui/button";
 import {Alerts} from "@/shared/ui/alerts";
 import {BlockingLoader} from "@/shared/ui/blockingLoader";
 
+import {validationSchema, getInitialValues} from "./model";
 import css from "./styles.module.scss";
 
 import {ReactComponent as XMarkIcon} from "@/assets/icons/x-mark.svg";
 
 
-export const validationSchema = Yup.object().shape({
-    isbn: Yup.string().required("Input title"),
-    title: Yup.string().required("Input title"),
-    author: Yup.string().required("Input title"),
-    pages: Yup.number().required("Input title"),
-    description: Yup.string().required("Input title"),
-});
 
 
 interface Props {
@@ -44,7 +37,6 @@ export const ModalEditBook = withModal(({isbn, isOpen, onClose}: Props) => {
                 const {data} = await Api.getBookByIsbn(isbn);
                 if (data) {
                     setBook(data);
-                    console.log("SUCCESS BOOK");
                 }
             } catch (err) {
 
@@ -54,18 +46,11 @@ export const ModalEditBook = withModal(({isbn, isOpen, onClose}: Props) => {
 
     const formik = useFormik({
         enableReinitialize: true,
-        initialValues: {
-            isbn: book?.isbn || "",
-            title: book?.title || "",
-            author: book?.author || "",
-            description: book?.description || "",
-            pages: book?.pages || 0,
-        } as DTO.Book,
+        initialValues: getInitialValues(book),
         validationSchema,
         validateOnBlur: false,
         validateOnChange: true,
         onSubmit: async (values, {setSubmitting, resetForm}) => {
-            console.log("FORMIK", values);
             try {
                 BlockingLoader.show();
                 await updateBookTrigger({isbn, book: {...values}}).unwrap();
@@ -81,7 +66,6 @@ export const ModalEditBook = withModal(({isbn, isOpen, onClose}: Props) => {
                 });
                 onClose();
                 resetForm();
-                // }
             } catch (err) {
                 console.error(err);
                 const {error} = err as { error: string };
@@ -90,7 +74,6 @@ export const ModalEditBook = withModal(({isbn, isOpen, onClose}: Props) => {
                 setSubmitting(false);
                 BlockingLoader.hide();
             }
-
         }
     });
 

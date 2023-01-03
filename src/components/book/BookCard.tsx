@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 import {DTO, bookApi} from "@/shared/api";
 import {Alerts} from "@/shared/ui/alerts";
 
-
 import css from "./styles.module.scss";
 
 import {ReactComponent as TrashIcon} from "@/assets/icons/trash.svg";

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useCallback} from "react";
 import cn from "classnames";
 
 
@@ -12,17 +12,15 @@ import {ModalEditBook} from "@/components/modalEditBook";
 import {BooksSkeletonLoader} from "@/components/booksSkeletonLoader";
 
 
-
-
 export const BooksPage = () => {
     const [isShowAddBookModal, setIsShowAddBookModal] = useState(false);
     const [selectedBookIsbn, setSelectedBookIsbn] = useState("");
 
     const {data: books, isLoading, error} = bookApi.useGetAllBooksQuery();
 
-    const openBook = (isbn: string) => {
+    const openBook = useCallback((isbn: string) => {
         setSelectedBookIsbn(isbn);
-    };
+    }, []);
 
 
     return (
@@ -35,7 +33,7 @@ export const BooksPage = () => {
 
 
                 {
-                    (!books?.length && !isLoading) && (
+                    (!books?.length && !isLoading && !error) && (
                         <p className={css.emptyMsg}>
                             Your book list is empty, please add one more book
                         </p>
@@ -46,11 +44,11 @@ export const BooksPage = () => {
                         (isLoading || error) && <BooksSkeletonLoader qty={4}/>
                     }
                     {
-                        books?.map((book, i) =>
+                        books?.map((book) =>
                             <BookCard
-                                key={i}
+                                key={book.isbn}
                                 book={book}
-                                onOpenBook={() => openBook(book.isbn)}
+                                onOpenBook={openBook}
                             />
                         )
                     }
