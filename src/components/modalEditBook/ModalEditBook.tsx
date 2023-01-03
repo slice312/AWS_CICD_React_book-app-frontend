@@ -1,65 +1,98 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useFormik} from "formik";
+import * as Yup from "yup";
 import Swal from "sweetalert2";
 import cn from "classnames";
 
-import {bookApi} from "@/shared/api";
+import {DTO, Api, bookApi} from "@/shared/api";
 import {withModal} from "@/shared/ui/modal";
 import {Button} from "@/shared/ui/button";
+import {Alerts} from "@/shared/ui/alerts";
 import {BlockingLoader} from "@/shared/ui/blockingLoader";
 
-import {validationSchema, initialValues} from "./model";
-import css from "./modalAddBook.module.scss";
+import css from "./styles.module.scss";
 
 import {ReactComponent as XMarkIcon} from "@/assets/icons/x-mark.svg";
 
 
+export const validationSchema = Yup.object().shape({
+    isbn: Yup.string().required("Input title"),
+    title: Yup.string().required("Input title"),
+    author: Yup.string().required("Input title"),
+    pages: Yup.number().required("Input title"),
+    description: Yup.string().required("Input title"),
+});
+
+
 interface Props {
+    isbn: string;
     isOpen: boolean;
     onClose: () => void;
 }
 
 
-export const ModalAddBook =  withModal(({isOpen, onClose}: Props) => {
-    const [addBookTrigger] = bookApi.useAddBookMutation();
-    const [isValidateOnChange, setIsValidateOnChange] = useState(false);
+export const ModalEditBook = withModal(({isbn, isOpen, onClose}: Props) => {
+    const [updateBookTrigger] = bookApi.useUpdateBookMutation();
 
-    const formik = useFormik({
-        initialValues,
-        validationSchema,
-        validateOnBlur: false,
-        validateOnChange: isValidateOnChange,
-        validate: () => {
-            setIsValidateOnChange(true);
-        },
-        onSubmit: async (values, {resetForm}) => {
-            try {
-                BlockingLoader.show();
-                const newBookData = await addBookTrigger(values).unwrap();
-                if (newBookData) {
-                    await Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Created",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    onClose();
-                    resetForm();
-                }
-            } catch (err) {
-                console.error(err);
-            } finally {
-                BlockingLoader.hide();
-            }
-        }
-    });
+    const [book, setBook] = useState<DTO.Book>();
 
     useEffect(() => {
-        return () => {
-            formik.resetForm({values: initialValues});
-        };
-    }, []);
+        if (!isbn)
+            return;
+        (async () => {
+            try {
+                const {data} = await Api.getBookByIsbn(isbn);
+                if (data) {
+                    setBook(data);
+                    console.log("SUCCESS BOOK");
+                }
+            } catch (err) {
+
+            }
+        })();
+    }, [isbn]);
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            isbn: book?.isbn || "",
+            title: book?.title || "",
+            author: book?.author || "",
+            description: book?.description || "",
+            pages: book?.pages || 0,
+        } as DTO.Book,
+        validationSchema,
+        validateOnBlur: false,
+        validateOnChange: true,
+        onSubmit: async (values, {setSubmitting, resetForm}) => {
+            console.log("FORMIK", values);
+            try {
+                BlockingLoader.show();
+                await updateBookTrigger({isbn, book: {...values}}).unwrap();
+                // TODO: response
+                // const response = await Api.addBook(values);
+                // if (response.status === 200) {
+                await Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Updated",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                onClose();
+                resetForm();
+                // }
+            } catch (err) {
+                console.error(err);
+                const {error} = err as { error: string };
+                await Alerts.showError(error || "Unknown");
+            } finally {
+                setSubmitting(false);
+                BlockingLoader.hide();
+            }
+
+        }
+    });
 
 
     return (
@@ -71,8 +104,13 @@ export const ModalAddBook =  withModal(({isOpen, onClose}: Props) => {
                 Icon={<XMarkIcon/>}
             >
             </Button>
-            <h2 className={css.title}>Add Book</h2>
-            <form className={css.form} autoComplete="on" onSubmit={formik.handleSubmit}>
+            <h2 className={css.title}>Edit Book</h2>
+
+            <form
+                className={css.form}
+                autoComplete="on"
+                onSubmit={formik.handleSubmit}
+            >
                 <div className={css.field}>
                     <label htmlFor="input-isbn">
                         ISBN:
@@ -82,6 +120,8 @@ export const ModalAddBook =  withModal(({isOpen, onClose}: Props) => {
                         className={cn(css.input, formik.errors.isbn && css.inputError)}
                         type="text"
                         placeholder="ISBN"
+                        readOnly
+                        disabled
                         {...formik.getFieldProps("isbn")}
                     />
                     <span className={css.errorLabel}>{formik.errors.isbn}</span>
@@ -141,7 +181,8 @@ export const ModalAddBook =  withModal(({isOpen, onClose}: Props) => {
                     />
                     <span className={css.errorLabel}>{formik.errors.description}</span>
                 </div>
-                <Button className={css.btnSave} type="submit">
+
+                <Button className={css.btnSave} type="submit" disabled={formik.isSubmitting}>
                     Save
                 </Button>
             </form>
