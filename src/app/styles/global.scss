@@ -1,8 +1,24 @@
+@import "@/shared/styles/vars.scss";
+
 /* stylelint-disable selector-class-pattern */
 
 body {
     width: 100%;
     height: 100%;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: rgba(248, 248, 248, 0.7);
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $color-element-main;
+        border-radius: 10px;
+    }
 }
 
 #root {
