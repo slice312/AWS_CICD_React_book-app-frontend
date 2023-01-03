@@ -3,7 +3,7 @@ import {CSSTransition} from "react-transition-group";
 import cn from "classnames";
 
 import {ReactPortal} from "./ReactPortal";
-import css from "./styles.module.scss";
+import css from "./modal.module.scss";
 
 
 interface Props {
@@ -21,7 +21,6 @@ export const Modal = ({children, isOpen, onClose}: Props) => {
                 onClose();
         };
         document.body.addEventListener("keydown", closeOnEscapeKey);
-        document.body.style.overflow = "hidden"; // disable scrolling
 
         return () => {
             document.body.removeEventListener("keydown", closeOnEscapeKey);
@@ -30,12 +29,17 @@ export const Modal = ({children, isOpen, onClose}: Props) => {
 
     }, [onClose]);
 
+    useEffect(() => {
+        document.body.style.overflow = isOpen ? "hidden" : "auto"; // disable scrolling
+    }, [isOpen]);
+
     return (
         <ReactPortal wrapperId="modal-root">
             <CSSTransition
                 nodeRef={nodeRef}
                 in={isOpen}
-                timeout={{enter: 0, exit: 2000}}
+                timeout={{enter: 0, exit: 300}}
+                mountOnEnter
                 unmountOnExit
                 classNames={{
                     enterDone: css.modalOpen,

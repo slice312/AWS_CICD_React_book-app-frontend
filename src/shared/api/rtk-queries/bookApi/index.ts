@@ -27,14 +27,15 @@ export const bookApi = createApi({
             },
             invalidatesTags: ["Books"]
         }),
-        addBook: build.mutation<void, DTO.Book>({
+        addBook: build.mutation<DTO.Book, DTO.Book>({
             query: (book) => {
                 return {
                     url: "Book",
                     method: "POST",
                     body: book
                 };
-            }
+            },
+            invalidatesTags: ["Books"]
         }),
         updateBook: build.mutation<void, UpdateRequest>({
             query: (args) => {
@@ -53,7 +54,19 @@ export const bookApi = createApi({
                     method: "PATCH"
                 };
             },
-            invalidatesTags: ["Books"]
+            onQueryStarted: async (request, {dispatch, queryFulfilled, getState}) => {
+                const patch = dispatch(bookApi.util.updateQueryData("getAllBooks", undefined, (draft) => {
+                    const book = draft.find(x => x.isbn === request);
+                    if (book)
+                        book.isFavorite = !book.isFavorite;
+                }));
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patch.undo();
+                }
+            },
         })
     })
 });

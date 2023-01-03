@@ -1,0 +1,10 @@
+@import "@/shared/styles/mixins.scss";
+
+
+.footer {
+    flex: 0 0 auto;
+    @include center-elements();
+    padding: 41px 0 55px 0;
+    background-color: #2A2349;
+    @include font-default(400, 14px, auto, beige);
+}

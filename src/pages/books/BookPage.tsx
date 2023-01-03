@@ -1,5 +1,4 @@
-import React, {useCallback, useState} from "react";
-import Swal from "sweetalert2";
+import React, {useState} from "react";
 import cn from "classnames";
 
 
@@ -13,33 +12,13 @@ import {ModalEditBook} from "@/components/modalEditBook";
 import {BooksSkeletonLoader} from "@/components/booksSkeletonLoader";
 
 
-interface Props {
-
-}
 
 
-export const BooksPage = (props: Props) => {
+export const BooksPage = () => {
     const [isShowAddBookModal, setIsShowAddBookModal] = useState(false);
     const [selectedBookIsbn, setSelectedBookIsbn] = useState("");
 
     const {data: books, isLoading, error} = bookApi.useGetAllBooksQuery();
-
-    console.log("RTK ", isLoading, books);
-
-
-    // TODO: isFetching добавить
-    const [deleteBookTrigger] = bookApi.useDeleteBookMutation();
-
-
-    const deleteBook = useCallback(async (isbn: string) => {
-        try {
-            await deleteBookTrigger(isbn); // TODO: result and what with unwrap method
-            showSuccessDeleteMsg();
-        } catch (err) {
-
-        }
-    }, []);
-
 
     const openBook = (isbn: string) => {
         setSelectedBookIsbn(isbn);
@@ -71,7 +50,6 @@ export const BooksPage = (props: Props) => {
                             <BookCard
                                 key={i}
                                 book={book}
-                                onDelete={deleteBook}
                                 onOpenBook={() => openBook(book.isbn)}
                             />
                         )
@@ -82,14 +60,7 @@ export const BooksPage = (props: Props) => {
                     type="button"
                     onClick={() => setIsShowAddBookModal(true)}
                 >
-                    AddBook
-                </Button>
-
-                <Button
-                    className={css.btnAdd}
-                    linkTo={"/home"}
-                >
-                    Link
+                    Add Book
                 </Button>
             </div>
             <ModalAddBook isOpen={isShowAddBookModal} onClose={() => setIsShowAddBookModal(false)}/>
@@ -99,12 +70,3 @@ export const BooksPage = (props: Props) => {
 };
 
 
-const showSuccessDeleteMsg = () => {
-    Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Deleted",
-        showConfirmButton: false,
-        timer: 1500
-    });
-};
