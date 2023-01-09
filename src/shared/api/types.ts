@@ -9,3 +9,13 @@ export interface Book {
     pages: number;
     isFavorite?: boolean;
 }
+
+
+export interface FormModelError {
+    status: string;
+    data: ServerFieldErrors;
+}
+
+export interface ServerFieldErrors {
+    [key: string]: string[];
+}
