@@ -3,7 +3,7 @@ import {useFormik} from "formik";
 import Swal from "sweetalert2";
 import cn from "classnames";
 
-import {bookApi} from "@/shared/api";
+import {DTO, bookApi} from "@/shared/api";
 import {withModal} from "@/shared/ui/modal";
 import {Button} from "@/shared/ui/button";
 import {BlockingLoader} from "@/shared/ui/blockingLoader";
@@ -20,7 +20,7 @@ interface Props {
 }
 
 
-export const ModalAddBook =  withModal(({isOpen, onClose}: Props) => {
+export const ModalAddBook = withModal(({isOpen, onClose}: Props) => {
     const [addBookTrigger] = bookApi.useAddBookMutation();
     const [isValidateOnChange, setIsValidateOnChange] = useState(false);
 
@@ -32,7 +32,7 @@ export const ModalAddBook =  withModal(({isOpen, onClose}: Props) => {
         validate: () => {
             setIsValidateOnChange(true);
         },
-        onSubmit: async (values, {resetForm}) => {
+        onSubmit: async (values, {setSubmitting, setFieldError, resetForm}) => {
             try {
                 BlockingLoader.show();
                 const newBookData = await addBookTrigger(values).unwrap();
@@ -48,8 +48,11 @@ export const ModalAddBook =  withModal(({isOpen, onClose}: Props) => {
                     resetForm();
                 }
             } catch (err) {
-                console.error(err);
+                const error = err as DTO.FormModelError;
+                Object.keys(error.data)
+                    .forEach(key => setFieldError(key, error.data[key][0]));
             } finally {
+                setSubmitting(false);
                 BlockingLoader.hide();
             }
         }
@@ -141,7 +144,7 @@ export const ModalAddBook =  withModal(({isOpen, onClose}: Props) => {
                     />
                     <span className={css.errorLabel}>{formik.errors.description}</span>
                 </div>
-                <Button className={css.btnSave} type="submit">
+                <Button className={css.btnSave} type="submit" disabled={formik.isSubmitting}>
                     Save
                 </Button>
             </form>

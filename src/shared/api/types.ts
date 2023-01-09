@@ -1,6 +1,3 @@
-
-// TODO: модель с беком проверить
-
 export interface Book {
     isbn: string;
     title: string;
@@ -8,4 +5,14 @@ export interface Book {
     description: string;
     pages: number;
     isFavorite?: boolean;
+}
+
+
+export interface FormModelError {
+    status: string | number;
+    data: ServerFieldErrors;
+}
+
+export interface ServerFieldErrors {
+    [key: string]: string[];
 }

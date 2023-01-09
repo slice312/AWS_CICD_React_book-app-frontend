@@ -1,24 +1,20 @@
 import {useFormik} from "formik";
 import css from "./styles.module.scss";
 import {Button} from "@/shared/ui/button";
-import {useNavigate} from "react-router-dom";
 
-import {signUpUserWithEmail} from "@/shared/lib/cognito";
+import {signInWithEmail} from "@/shared/lib/cognito";
 
 
-export const Home = () => {
+export const SignInPage = () => {
 
-    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
-            email: "",
             name: "",
-            password: ""
+            code: ""
         },
         onSubmit: async (values, {resetForm}) => {
-            const response = await signUpUserWithEmail(values.name, values.email, values.password);
+            const response = await signInWithEmail(values.name, values.code);
             console.log(response);
-            navigate("/confirm-code");
         }
     });
 
@@ -26,13 +22,6 @@ export const Home = () => {
     return (
         <div>
             <form className={css.form} onSubmit={formik.handleSubmit}>
-                <label htmlFor="">
-                    email
-                    <input
-                        type="text"
-                        {...formik.getFieldProps("email")}
-                    />
-                </label>
                 <label htmlFor="">
                     name
                     <input
@@ -44,17 +33,14 @@ export const Home = () => {
                     password
                     <input
                         type="text"
-                        {...formik.getFieldProps("password")}
+                        {...formik.getFieldProps("code")}
                     />
                 </label>
 
                 <Button type="submit">
-                    Sign Up
+                    Sign In
                 </Button>
             </form>
-            <Button linkTo={"/confirm-code"}>
-                Confirm Code
-            </Button>
         </div>
     );
 };

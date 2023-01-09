@@ -21,7 +21,7 @@ export const BookCard = ({book, onOpenBook}: Props) => {
 
     const deleteBook = async (isbn: string) => {
         try {
-            await deleteBookTrigger(isbn); // TODO: result and what with unwrap method
+            await deleteBookTrigger(isbn).unwrap();
             showSuccessDeleteMsg();
         } catch (err) {
 
