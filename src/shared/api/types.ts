@@ -1,6 +1,3 @@
-
-// TODO: модель с беком проверить
-
 export interface Book {
     isbn: string;
     title: string;

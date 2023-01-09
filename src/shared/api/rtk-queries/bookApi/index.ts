@@ -55,7 +55,6 @@ export const bookApi = createApi({
                 };
             },
             onQueryStarted: async (request, {dispatch, queryFulfilled, getState}) => {
-                // TODO: fix weak reference
                 const patch = dispatch(bookApi.util.updateQueryData("getAllBooks", undefined, (draft) => {
                     const book = draft.find(x => x.isbn === request);
                     if (book)
