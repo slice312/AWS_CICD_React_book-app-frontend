@@ -37,7 +37,7 @@ export const bookApi = createApi({
             },
             invalidatesTags: ["Books"]
         }),
-        updateBook: build.mutation<void, UpdateRequest>({
+        updateBook: build.mutation<DTO.Book, UpdateRequest>({
             query: (args) => {
                 return {
                     url: `Books/${args.isbn}`,

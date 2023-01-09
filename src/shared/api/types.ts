@@ -9,7 +9,7 @@ export interface Book {
 
 
 export interface FormModelError {
-    status: string;
+    status: string | number;
     data: ServerFieldErrors;
 }
 

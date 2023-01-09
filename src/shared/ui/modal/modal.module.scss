@@ -1,3 +1,6 @@
+@import "@/shared/styles/vars.scss";
+
+
 .modal {
     position: fixed;
     top: 0;
@@ -9,6 +12,20 @@
     background-color: rgba(0, 0, 0, 0.5);
     pointer-events: none;
     transition: all 0.3s ease-in-out;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: rgba(248, 248, 248, 0.7);
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $color-element-main;
+        border-radius: 10px;
+    }
 
     .content {
         min-height: 100%;

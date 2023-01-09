@@ -10,11 +10,9 @@ import {Alerts} from "@/shared/ui/alerts";
 import {BlockingLoader} from "@/shared/ui/blockingLoader";
 
 import {validationSchema, getInitialValues} from "./model";
-import css from "./styles.module.scss";
+import css from "./modalEditBook.module.scss";
 
 import {ReactComponent as XMarkIcon} from "@/assets/icons/x-mark.svg";
-
-
 
 
 interface Props {
@@ -26,6 +24,7 @@ interface Props {
 
 export const ModalEditBook = withModal(({isbn, isOpen, onClose}: Props) => {
     const [updateBookTrigger] = bookApi.useUpdateBookMutation();
+    const [isValidateOnChange, setIsValidateOnChange] = useState(false);
 
     const [book, setBook] = useState<DTO.Book>();
 
@@ -49,27 +48,33 @@ export const ModalEditBook = withModal(({isbn, isOpen, onClose}: Props) => {
         initialValues: getInitialValues(book),
         validationSchema,
         validateOnBlur: false,
-        validateOnChange: true,
-        onSubmit: async (values, {setSubmitting, resetForm}) => {
+        validateOnChange: isValidateOnChange,
+        validate: () => {
+            setIsValidateOnChange(true);
+        },
+        onSubmit: async (values, {setSubmitting, setFieldError, resetForm}) => {
             try {
                 BlockingLoader.show();
-                await updateBookTrigger({isbn, book: {...values}}).unwrap();
-                // TODO: response
-                // const response = await Api.addBook(values);
-                // if (response.status === 200) {
-                await Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Updated",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                onClose();
-                resetForm();
+                const book = await updateBookTrigger({isbn, book: {...values}}).unwrap();
+                if (book) {
+                    await Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Updated",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    onClose();
+                    resetForm();
+                }
             } catch (err) {
-                console.error(err);
-                const {error} = err as { error: string };
-                await Alerts.showError(error || "Unknown");
+                const error = err as DTO.FormModelError;
+                if (error.status === 404)
+                    await Alerts.showError("ISBN not found");
+                else {
+                    Object.keys(error.data)
+                        .forEach(key => setFieldError(key, error.data[key][0]));
+                }
             } finally {
                 setSubmitting(false);
                 BlockingLoader.hide();
