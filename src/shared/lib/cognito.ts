@@ -14,7 +14,7 @@ const poolData = {
 const userPool: CognitoUserPool = new CognitoUserPool(poolData);
 
 let currentUser: any = userPool.getCurrentUser();
-debugger
+
 function getCognitoUser(username: string) {
     const userData = {
         Username: username,
