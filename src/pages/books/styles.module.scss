@@ -39,7 +39,8 @@
 
     .btnAdd {
         align-self: center;
-        padding: 5px 120px;
+        width: clamp(250px, 50%, 350px);
+        padding: 5px 10px;
         font-size: 20px;
         line-height: 30px;
     }

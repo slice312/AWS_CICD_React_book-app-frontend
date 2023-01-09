@@ -1,0 +1,12 @@
+@import "@/shared/styles/mixins.scss";
+
+
+.form {
+    @include flex-col(center, center);
+    gap: 25px;
+
+
+    input {
+        border: 1px solid black;
+    }
+}
