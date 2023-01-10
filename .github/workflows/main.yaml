@@ -20,7 +20,7 @@ jobs:
       - run: yarn build
       - run: yarn lint-ts
       - run: yarn lint-styles
-      - uses: jakejarvis/s3-sync-action@master
+      - uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
