@@ -10,7 +10,6 @@ import {SignInPage} from "@/pages/signIn";
 export const Router = () => {
     return (
         <Routes>
-            <Route path="/404" element={<div/>}/>
             <Route path="/" element={<Navigate to="/books"/>}/>
             <Route path="/books" element={<BooksPage/>}/>
             <Route path="/home" element={<Home/>}/>
