@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import {DTO, bookApi} from "@/shared/api";
 import {Alerts} from "@/shared/ui/alerts";
 
-import css from "./styles.module.scss";
+import css from "./bookCard.module.scss";
 
 import {ReactComponent as TrashIcon} from "@/assets/icons/trash.svg";
 import {ReactComponent as HeartIcon} from "@/assets/icons/heart.svg";
@@ -54,7 +54,7 @@ export const BookCard = ({book, onOpenBook}: Props) => {
                     onClick={async (e) => {
                         e.stopPropagation();
                         await toggleFavorite(book.isbn).unwrap();
-                    }                    }
+                    }}
                 >
                     <HeartIcon width={20} height={20} fill={book.isFavorite ? "red" : "gray"}/>
                 </button>
